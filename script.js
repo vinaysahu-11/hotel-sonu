@@ -429,9 +429,10 @@ async function syncGooglePlacesData() {
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const data = await res.json();
 
-    if (data && data.success && data.place) {
-      renderLiveRatingAndReviews(data.place);
-      renderLivePhotos(data.place);
+    const place = data ? (data.place || data.data) : null;
+    if (data && data.success && place) {
+      renderLiveRatingAndReviews(place);
+      renderLivePhotos(place);
       return;
     }
 

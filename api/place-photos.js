@@ -8,7 +8,7 @@ module.exports = async (req, res) => {
 
   if (req.method === 'OPTIONS') return res.status(200).end();
 
-  const { name, maxHeightPx = 800, maxWidthPx = 1200 } = req.query;
+  const { name, maxHeightPx = 800, maxWidthPx = 1200, maxWidth, maxHeight } = req.query;
   const apiKey = process.env.GOOGLE_MAPS_API_KEY;
 
   if (!apiKey || !name) {
@@ -21,8 +21,8 @@ module.exports = async (req, res) => {
   }
 
   // Clamp dimensions to sensible limits
-  const maxW = Math.min(Math.max(parseInt(maxWidthPx, 10) || 800, 100), 1600);
-  const maxH = Math.min(Math.max(parseInt(maxHeightPx, 10) || 600, 100), 1600);
+  const maxW = Math.min(Math.max(parseInt(maxWidthPx || maxWidth, 10) || 800, 100), 1600);
+  const maxH = Math.min(Math.max(parseInt(maxHeightPx || maxHeight, 10) || 600, 100), 1600);
 
   try {
     const googleUrl = `https://places.googleapis.com/v1/${name}/media?maxHeightPx=${maxH}&maxWidthPx=${maxW}`;

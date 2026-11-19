@@ -110,25 +110,28 @@ module.exports = async (req, res) => {
     // Cache successful responses on CDN for 1 hour, browser for 15 mins
     res.setHeader('Cache-Control', 'public, s-maxage=3600, max-age=900, stale-while-revalidate=86400');
 
+    const placeInfo = {
+      id: place.id,
+      displayName: place.displayName,
+      formattedAddress: place.formattedAddress,
+      location: place.location,
+      nationalPhoneNumber: place.nationalPhoneNumber,
+      internationalPhoneNumber: place.internationalPhoneNumber,
+      rating: place.rating || null,
+      userRatingCount: place.userRatingCount || 0,
+      websiteUri: place.websiteUri || null,
+      googleMapsUri: place.googleMapsUri || null,
+      photos: place.photos || [],
+      reviews: place.reviews || [],
+      regularOpeningHours: place.regularOpeningHours || null,
+      businessStatus: place.businessStatus || null
+    };
+
     return res.status(200).json({
       configured: true,
       success: true,
-      data: {
-        id: place.id,
-        displayName: place.displayName,
-        formattedAddress: place.formattedAddress,
-        location: place.location,
-        nationalPhoneNumber: place.nationalPhoneNumber,
-        internationalPhoneNumber: place.internationalPhoneNumber,
-        rating: place.rating || null,
-        userRatingCount: place.userRatingCount || 0,
-        websiteUri: place.websiteUri || null,
-        googleMapsUri: place.googleMapsUri || null,
-        photos: place.photos || [],
-        reviews: place.reviews || [],
-        regularOpeningHours: place.regularOpeningHours || null,
-        businessStatus: place.businessStatus || null
-      }
+      data: placeInfo,
+      place: placeInfo
     });
 
   } catch (error) {
